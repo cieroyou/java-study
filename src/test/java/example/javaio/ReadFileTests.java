@@ -1,16 +1,24 @@
 package example.javaio;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.io.StreamTokenizer;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +28,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -181,6 +191,120 @@ public class ReadFileTests {
         }
     }
 
+    // 구분자가 있는 파일을 읽을 때 용이함
+    @Order(9)
+    @DisplayName("StreamTokenizer로 읽기")
+    @Test
+    public void whenReadWithStreamTokenizer_thenCorrectTokens()
+        throws IOException {
+        String file = "src/test/resources/fileTestTokenizer.txt";
+        FileReader reader = new FileReader(file);
+        StreamTokenizer tokenizer = new StreamTokenizer(reader);
+
+        // token 1
+        tokenizer.nextToken();
+        assertEquals(StreamTokenizer.TT_WORD, tokenizer.ttype);
+        assertEquals("Hello", tokenizer.sval);
+
+        // token 2
+        tokenizer.nextToken();
+        assertEquals(StreamTokenizer.TT_NUMBER, tokenizer.ttype);
+        assertEquals(1, tokenizer.nval, 0.0000001);
+
+        // token 3
+        tokenizer.nextToken();
+        assertEquals(StreamTokenizer.TT_EOF, tokenizer.ttype);
+        reader.close();
+    }
+
+    @Order(10)
+    @DisplayName("DataInputStream으로 읽기")
+    @Test
+    public void whenReadWithDataInputStream_thenCorrect() throws IOException {
+        // given
+        String expectedValue = "Hello, world!!";
+        String file = "src/test/resources/fileTest.txt";
+        String result = null;
+        // when
+        try (DataInputStream reader = new DataInputStream(new FileInputStream(file))) {
+            int nBytesToRead = reader.available();
+            if (nBytesToRead > 0) {
+                byte[] bytes = new byte[nBytesToRead];
+                reader.read(bytes);
+                result = new String(bytes);
+            }
+        }
+        assertEquals(expectedValue, result);
+    }
+
+    @Order(11)
+    @DisplayName("FileChannel로 읽기")
+    @Test
+    public void whenReadWithFileChannel_thenCorrect() throws IOException {
+        // given
+        String expected_value = "Hello, world!!";
+        String file = "src/test/resources/fileTest.txt";
+        // when
+        try (RandomAccessFile reader = new RandomAccessFile(file, "r");
+            FileChannel channel = reader.getChannel();) {
+            int bufferSize = 1024;
+            if (bufferSize > channel.size()) {
+                bufferSize = (int) channel.size();
+            }
+            ByteBuffer buff = ByteBuffer.allocate(bufferSize);
+            channel.read(buff);
+            buff.flip();
+            // then
+            assertEquals(expected_value, new String(buff.array()));
+        }
+    }
+
+    @Order(12)
+    @DisplayName("UTF-8 EncodedFile(중국어) 읽기")
+    @Test
+    public void whenReadUTFEncodedFile_thenCorrect() throws IOException {
+        // given
+        String expected_value = "青空";
+        String file = "src/test/resources/fileTestUtf8Chinese.txt";
+        String currentLine;
+        // when
+        try (BufferedReader reader = new BufferedReader
+            (new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+            currentLine = reader.readLine();
+        }
+        // then
+        assertEquals(expected_value, currentLine);
+    }
+
+    @Order(13)
+    @DisplayName("URL로부터 Content 읽기")
+    @Test
+    public void givenURLName_whenUsingURL_thenFileData() throws IOException {
+        // given
+        String expectedData = "Example Domain";
+        URL urlObject = new URL("http://www.example.com/");
+        String data;
+        // when
+        URLConnection urlConnection = urlObject.openConnection();
+        try(InputStream inputStream = urlConnection.getInputStream()){
+            data = readFromInputStream(inputStream);
+        }
+        // then
+        assertThat(data.trim(), CoreMatchers.containsString(expectedData));
+    }
+
+    @Order(14)
+    @DisplayName("JAR로 File 읽기")
+    @Test
+    public void givenFileName_whenUsingJarFile_thenFileData() throws IOException {
+        String expectedData = "BSD License";
+
+        Class clazz = Matchers.class;
+        InputStream inputStream = clazz.getResourceAsStream("/LICENSE.txt");
+        String data = readFromInputStream(inputStream);
+
+        assertThat(data.trim(), CoreMatchers.containsString(expectedData));
+    }
     /**
      * InputStream 을 읽어서 String으로 변환
      */
