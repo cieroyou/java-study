@@ -17,10 +17,10 @@ public class SynchronizedCollectionTests {
     @Test
     public void test() {
         List<String> list = new ArrayList<String>();
-        list.add("바보");
-        list.add("천재");
-        list.add("뭐지");
-        list.add("진짜?");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
 
         SynchronizedCollection<String> sc = SynchronizedCollection.synchronizedCollection(list);
 
@@ -30,20 +30,19 @@ public class SynchronizedCollectionTests {
             executorService.submit(()->{
                 System.out.println(
                     "threadId = " + Thread.currentThread().getId() + " removeIf=" + sc.removeIf(
-                        p -> p.equals("바보")));
+                        p -> p.equals("1")));
             });
         }
-
         executorService.shutdown();
     }
 
     @Test
     public void test2() {
         List<String> list = new ArrayList<String>();
-        list.add("바보");
-        list.add("천재");
-        list.add("뭐지");
-        list.add("진짜?");
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.add("4");
 
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
@@ -52,7 +51,7 @@ public class SynchronizedCollectionTests {
             executorService.submit(()->{
                 System.out.println(
                     "threadId = " + Thread.currentThread().getId() + " removeIf=" + list.removeIf(
-                        p -> p.equals("바보")));
+                        p -> p.equals("1")));
             });
         }
 
