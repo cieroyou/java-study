@@ -1,78 +1,71 @@
 package example;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
-public class ConcurrencyModificationTests {
+class ConcurrencyModificationTests {
 
     @Test
-    public void givenHashMap_whenSumParallel_thenError() throws Exception {
+    void givenHashMap_whenSumParallel_thenError() throws Exception {
         Map<String, Integer> map = new HashMap<>();
         List<Integer> sumList = parallelSum100(map, 100);
 
         assertNotEquals(1, sumList
-            .stream()
-            .distinct()
-            .count());
+                .stream()
+                .distinct()
+                .count());
         long wrongResultCount = sumList
-            .stream()
-            .filter(num -> num != 100)
-            .count();
+                .stream()
+                .filter(num -> num != 100)
+                .count();
 
         assertTrue(wrongResultCount > 0);
     }
 
     @Test
-    public void givenConcurrentMap_whenSumParallel_thenCorrect()
-        throws Exception {
+    void givenConcurrentMap_whenSumParallel_thenCorrect()
+            throws Exception {
         Map<String, Integer> map = new ConcurrentHashMap<>();
         List<Integer> sumList = parallelSum100(map, 1000);
 
         assertEquals(1, sumList
-            .stream()
-            .distinct()
-            .count());
+                .stream()
+                .distinct()
+                .count());
         long wrongResultCount = sumList
-            .stream()
-            .filter(num -> num != 100)
-            .count();
+                .stream()
+                .filter(num -> num != 100)
+                .count();
 
         assertEquals(0, wrongResultCount);
     }
 
     private List<Integer> parallelSum100(Map<String, Integer> map,
-        int executionTimes) throws InterruptedException {
+                                         int executionTimes) throws InterruptedException {
         List<Integer> sumList = new ArrayList<>(1000);
         for (int i = 0; i < executionTimes; i++) {
             map.put("test", 0);
             System.out.println("test 개수: " + map.size());
             ExecutorService executorService =
-                Executors.newFixedThreadPool(4);
+                    Executors.newFixedThreadPool(4);
             for (int j = 0; j < 10; j++) {
                 executorService.execute(() -> {
                     for (int k = 0; k < 10; k++) {
                         map.computeIfPresent(
-                            "test",
-                            (key, value) -> {
-                                value = value + 1;
-                                System.out.println("test 값: " + value);
-                                return value;
-                            }
+                                "test",
+                                (key, value) -> {
+                                    value = value + 1;
+                                    System.out.println("test 값: " + value);
+                                    return value;
+                                }
                         );
                     }
                 });
@@ -86,7 +79,7 @@ public class ConcurrencyModificationTests {
     }
 
     @Test
-    public void givenConcurrentMap_whenRemoveItem_thenCorrenct() {
+    void givenConcurrentMap_whenRemoveItem_thenCorrenct() {
         Map<Integer, String> map = new ConcurrentHashMap<>();
         for (int i = 0; i < 10; i++) {
             map.put(i, "test" + i);
@@ -101,7 +94,7 @@ public class ConcurrencyModificationTests {
     }
 
     @Test
-    public void givenHashMap_whenRemoveItem_thenConcurrencyModificationError() {
+    void givenHashMap_whenRemoveItem_thenConcurrencyModificationError() {
         Map<Integer, String> map = new HashMap<>();
         for (int i = 0; i < 10; i++) {
             map.put(i, "test" + i);
@@ -116,8 +109,8 @@ public class ConcurrencyModificationTests {
     }
 
     @Test
-    public void givenConcurrentMap_whenRemoveItemInOtherThread_thenCorrect()
-        throws InterruptedException {
+    void givenConcurrentMap_whenRemoveItemInOtherThread_thenCorrect()
+            throws InterruptedException {
         Map<Integer, String> map = new ConcurrentHashMap<>();
         for (int i = 0; i < 1000; i++) {
             if (i % 2 == 0) {
@@ -131,7 +124,7 @@ public class ConcurrencyModificationTests {
                 if (i % 2 == 1) {
                     map.put(i, "test" + i);
                     System.out.println(
-                        "threadId: " + Thread.currentThread().getId() + ", added item: " + i);
+                            "threadId: " + Thread.currentThread().getId() + ", added item: " + i);
                 }
             }
         });
@@ -146,8 +139,8 @@ public class ConcurrencyModificationTests {
     }
 
     @Test
-    public void givenConcurrentMap_whenAddItemInOtherThread_thenCorrect()
-        throws InterruptedException {
+    void givenConcurrentMap_whenAddItemInOtherThread_thenCorrect()
+            throws InterruptedException {
         Map<Integer, String> map = new ConcurrentHashMap<>();
         for (int i = 0; i < 1000; i++) {
             if (i % 2 == 0) {
@@ -161,7 +154,7 @@ public class ConcurrencyModificationTests {
                 if (i % 2 == 1) {
                     map.put(i, "test" + i);
                     System.out.println(
-                        "threadId: " + Thread.currentThread().getId() + ", added item: " + i);
+                            "threadId: " + Thread.currentThread().getId() + ", added item: " + i);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
@@ -182,8 +175,8 @@ public class ConcurrencyModificationTests {
     }
 
     @Test
-    public void givenConcurrentMap_whenAddItemInOtherThreadWithIterator_thenCorrect()
-        throws InterruptedException {
+    void givenConcurrentMap_whenAddItemInOtherThreadWithIterator_thenCorrect()
+            throws InterruptedException {
         Map<Integer, String> map = new ConcurrentHashMap<>();
         for (int i = 0; i < 1000; i++) {
             if (i % 2 == 0) {
@@ -197,7 +190,7 @@ public class ConcurrencyModificationTests {
                 if (i % 2 == 1) {
                     map.put(i, "test" + i);
                     System.out.println(
-                        "threadId: " + Thread.currentThread().getId() + ", added item: " + i);
+                            "threadId: " + Thread.currentThread().getId() + ", added item: " + i);
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
@@ -219,7 +212,7 @@ public class ConcurrencyModificationTests {
     }
 
     @Test
-    public void givenHashMap_whenRemoveItem_thenCorrenct() {
+    void givenHashMap_whenRemoveItem_thenCorrenct() {
         Map<Integer, String> map = new HashMap<>();
         for (int i = 0; i < 1000; i++) {
             map.put(i, "test" + i);
@@ -230,14 +223,14 @@ public class ConcurrencyModificationTests {
     }
 
     @Test
-    public void givenHashMap_whenRemoveItem_thenCorrenct2() {
+    void givenHashMap_whenRemoveItem_thenCorrenct2() {
         Map<Integer, String> map = new HashMap<>();
         for (int i = 0; i < 1000; i++) {
             map.put(i, "test" + i);
         }
 
         ExecutorService executorService =
-            Executors.newFixedThreadPool(4);
+                Executors.newFixedThreadPool(4);
         executorService.execute(() -> {
             map.keySet().removeIf(m -> m % 2 == 0);
         });
