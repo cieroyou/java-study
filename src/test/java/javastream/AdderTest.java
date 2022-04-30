@@ -29,4 +29,11 @@ class AdderTest {
         int result = myAdder.apply(2, 3);
         assertEquals(5, result);
     }
+
+    @Test
+    void triFunctionTest() {
+        TriFunction<Integer, Integer, Integer, Integer> threeAdder = (x, y, z) -> x + y + z;
+        assertEquals(6, threeAdder.apply(1, 2, 3));
+
+    }
 }
