@@ -19,7 +19,7 @@ public class BiConsumerTest {
     }
 
     private <T> void process(List<T> inputs, BiConsumer<Integer, T> processor) {
-        for(int i=0; i<inputs.size(); i++) {
+        for (int i = 0; i < inputs.size(); i++) {
             processor.accept(i, inputs.get(i));
         }
 

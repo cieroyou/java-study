@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ComparatorTest {
 
 
-    final List<User> users  = new java.util.ArrayList<>(List.of(
+    final List<User> users = new java.util.ArrayList<>(List.of(
             new User(3, "Alice"),
             new User(1, "Charlie"),
             new User(10, "Bob")

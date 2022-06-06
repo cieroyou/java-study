@@ -44,7 +44,7 @@ class ConsumerTest {
         inputs.forEach(input -> processor.accept(input));
     }
 
-    private <T> void processGeneric(List<T> inputs ,Consumer<T> processor) {
+    private <T> void processGeneric(List<T> inputs, Consumer<T> processor) {
         inputs.forEach(input -> processor.accept(input));
     }
 }

@@ -1,19 +1,16 @@
 package example.javaio;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
-import java.io.StreamTokenizer;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -26,15 +23,10 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * /test/resources/fileTest.txt 를 읽는 다양한 방법
@@ -89,7 +81,7 @@ public class ReadFileTests {
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(fileName).getFile());
         String data = FileUtils.readFileToString(file,
-            "UTF-8"); // FileUtils 에서 File -> InputStream -> String 을 순차적으로 진행한다.
+                "UTF-8"); // FileUtils 에서 File -> InputStream -> String 을 순차적으로 진행한다.
         // then
         assertEquals(expectedData, data.trim());
     }
@@ -159,7 +151,7 @@ public class ReadFileTests {
     @DisplayName("Java8(nio,Files.lines())을 이용한 파일읽기")
     @Test
     public void givenFilePath_whenUsingFilesLines_thenFileData()
-        throws URISyntaxException, IOException {
+            throws URISyntaxException, IOException {
         // given
         String expectedData = "Hello, world!!";
         String fileName = "fileTest.txt";
@@ -196,7 +188,7 @@ public class ReadFileTests {
     @DisplayName("StreamTokenizer로 읽기")
     @Test
     public void whenReadWithStreamTokenizer_thenCorrectTokens()
-        throws IOException {
+            throws IOException {
         String file = "src/test/resources/fileTestTokenizer.txt";
         FileReader reader = new FileReader(file);
         StreamTokenizer tokenizer = new StreamTokenizer(reader);
@@ -246,7 +238,7 @@ public class ReadFileTests {
         String file = "src/test/resources/fileTest.txt";
         // when
         try (RandomAccessFile reader = new RandomAccessFile(file, "r");
-            FileChannel channel = reader.getChannel();) {
+             FileChannel channel = reader.getChannel();) {
             int bufferSize = 1024;
             if (bufferSize > channel.size()) {
                 bufferSize = (int) channel.size();
@@ -269,7 +261,7 @@ public class ReadFileTests {
         String currentLine;
         // when
         try (BufferedReader reader = new BufferedReader
-            (new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
+                (new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
             currentLine = reader.readLine();
         }
         // then
@@ -286,7 +278,7 @@ public class ReadFileTests {
         String data;
         // when
         URLConnection urlConnection = urlObject.openConnection();
-        try(InputStream inputStream = urlConnection.getInputStream()){
+        try (InputStream inputStream = urlConnection.getInputStream()) {
             data = readFromInputStream(inputStream);
         }
         // then
@@ -305,6 +297,7 @@ public class ReadFileTests {
 
         assertThat(data.trim(), CoreMatchers.containsString(expectedData));
     }
+
     /**
      * InputStream 을 읽어서 String으로 변환
      */

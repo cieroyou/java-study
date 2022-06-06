@@ -26,7 +26,7 @@ public class Main {
         long startTime = System.currentTimeMillis();
 //        recolorSingleThreaded(originalImage, resultImage);
 
-        int numberOfThreads =4;
+        int numberOfThreads = 4;
         recolorMultithreaded(originalImage, resultImage, numberOfThreads);
         long endTime = System.currentTimeMillis();
 
@@ -43,11 +43,11 @@ public class Main {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight() / numberOfThreads;
 
-        for(int i = 0; i < numberOfThreads ; i++) {
+        for (int i = 0; i < numberOfThreads; i++) {
             final int threadMultiplier = i;
 
             Thread thread = new Thread(() -> {
-                int xOrigin = 0 ;
+                int xOrigin = 0;
                 int yOrigin = height * threadMultiplier;
 
                 recolorImage(originalImage, resultImage, xOrigin, yOrigin, width, height);
@@ -56,11 +56,11 @@ public class Main {
             threads.add(thread);
         }
 
-        for(Thread thread : threads) {
+        for (Thread thread : threads) {
             thread.start();
         }
 
-        for(Thread thread : threads) {
+        for (Thread thread : threads) {
             try {
                 thread.join();
             } catch (InterruptedException e) {
@@ -74,9 +74,9 @@ public class Main {
 
     public static void recolorImage(BufferedImage originalImage, BufferedImage resultImage, int leftCorner, int topCorner,
                                     int width, int height) {
-        for(int x = leftCorner ; x < leftCorner + width && x < originalImage.getWidth() ; x++) {
-            for(int y = topCorner ; y < topCorner + height && y < originalImage.getHeight() ; y++) {
-                recolorPixel(originalImage, resultImage, x , y);
+        for (int x = leftCorner; x < leftCorner + width && x < originalImage.getWidth(); x++) {
+            for (int y = topCorner; y < topCorner + height && y < originalImage.getHeight(); y++) {
+                recolorPixel(originalImage, resultImage, x, y);
             }
         }
     }
@@ -92,7 +92,7 @@ public class Main {
         int newGreen;
         int newBlue;
 
-        if(isShadeOfGray(red, green, blue)) {
+        if (isShadeOfGray(red, green, blue)) {
             newRed = Math.min(255, red + 10);
             newGreen = Math.max(0, green - 80);
             newBlue = Math.max(0, blue - 20);
@@ -110,7 +110,7 @@ public class Main {
     }
 
     public static boolean isShadeOfGray(int red, int green, int blue) {
-        return Math.abs(red - green) < 30 && Math.abs(red - blue) < 30 && Math.abs( green - blue) < 30;
+        return Math.abs(red - green) < 30 && Math.abs(red - blue) < 30 && Math.abs(green - blue) < 30;
     }
 
     public static int createRGBFromColors(int red, int green, int blue) {

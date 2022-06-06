@@ -16,7 +16,6 @@ public class _26_NoUseRawTypeTest {
      */
 
 
-
     void printObjectList(List<Object> list) {
         for (Object elem : list) {
             System.out.println(elem + " ");
