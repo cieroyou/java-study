@@ -1,6 +1,10 @@
 package javastream.chapter5;
 
 import javastream.chapter4.model.*;
+import javastream.chapter5.model.Car;
+import javastream.chapter5.model.Sedan;
+import javastream.chapter5.model.Suv;
+import javastream.chapter5.model.Ven;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

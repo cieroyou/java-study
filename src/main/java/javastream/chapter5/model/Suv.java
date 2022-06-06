@@ -1,4 +1,4 @@
-package javastream.chapter4.model;
+package javastream.chapter5.model;
 
 public class Suv extends Car {
     public Suv(String name, String brand) {

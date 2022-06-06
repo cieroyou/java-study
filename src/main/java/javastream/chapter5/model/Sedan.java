@@ -1,4 +1,4 @@
-package javastream.chapter4.model;
+package javastream.chapter5.model;
 
 public class Sedan extends Car {
     public Sedan(String name, String brand) {

@@ -1,4 +1,4 @@
-package javastream.chapter4.model;
+package javastream.chapter5.model;
 
 /**
  * Car 를 상속하는 여러가지 자동차들을 만들 목적
