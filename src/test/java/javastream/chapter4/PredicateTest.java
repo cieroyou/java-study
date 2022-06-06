@@ -1,4 +1,4 @@
-package javastream;
+package javastream.chapter4;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

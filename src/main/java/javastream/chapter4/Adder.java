@@ -1,4 +1,4 @@
-package javastream;
+package javastream.chapter4;
 
 import java.util.function.Function;
 

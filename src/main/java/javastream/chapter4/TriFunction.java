@@ -1,4 +1,4 @@
-package javastream;
+package javastream.chapter4;
 
 @FunctionalInterface
 public interface TriFunction<T, U, V, R> {
