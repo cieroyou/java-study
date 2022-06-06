@@ -12,16 +12,18 @@ input 하나를 받아서 boolean 을 리턴하는 Functional Interface
  */
 class PredicateTest {
 
+    Predicate<Integer> isPositivePredicate = x -> isPositive(x);
+
     @Test
     void predicateTest() {
-        Predicate<Integer> isPositive = x -> isPositive(x);
-        Assertions.assertTrue(isPositive.test(10));
+//        Predicate<Integer> isPositive = x -> isPositive(x);
+        Assertions.assertTrue(isPositivePredicate.test(10));
     }
 
     @Test
     void filterPositiveTest() {
         List<Integer> inputs = List.of(10, -5, 4, -2, 0);
-        List<Integer> result = filter(inputs, x -> isPositive(x));
+        List<Integer> result = filter(inputs, isPositivePredicate);
         Assertions.assertEquals(2, result.size());
     }
 
@@ -29,7 +31,7 @@ class PredicateTest {
     @Test
     void filterNonPositiveTest() {
         List<Integer> inputs = List.of(10, -5, 4, -2, 0);
-        Predicate<Integer> isPositivePredicate = x -> isPositive(x);
+//        Predicate<Integer> isPositivePredicate = x -> isPositive(x);
         List<Integer> result = filter(inputs, isPositivePredicate.negate());
         Assertions.assertEquals(3, result.size());
     }
@@ -38,8 +40,9 @@ class PredicateTest {
     @Test
     void filterNonNegativeTest() {
         List<Integer> inputs = List.of(10, -5, 4, -2, 0);
-        Predicate<Integer> isPositivePredicate = x -> isPositive(x);
-        List<Integer> result = filter(inputs, isPositivePredicate.or(x -> x == 0));
+//        Predicate<Integer> isPositivePredicate = x -> isPositive(x);
+        Predicate<Integer> isZeroPredicate = x -> x == 0;
+        List<Integer> result = filter(inputs, isPositivePredicate.or(isZeroPredicate));
         Assertions.assertEquals(3, result.size());
     }
 
@@ -47,8 +50,9 @@ class PredicateTest {
     @Test
     void filterPositiveEvenTest() {
         List<Integer> inputs = List.of(10, -5, 4, -2, 0);
-        Predicate<Integer> isPositivePredicate = x -> isPositive(x);
-        List<Integer> result = filter(inputs, isPositivePredicate.and(x -> (x % 2) == 0));
+//        Predicate<Integer> isPositivePredicate = x -> isPositive(x);
+        Predicate<Integer> isEvenPredicate = x -> (x % 2) == 0;
+        List<Integer> result = filter(inputs, isPositivePredicate.and(isEvenPredicate));
         Assertions.assertEquals(2, result.size());
     }
 
