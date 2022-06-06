@@ -32,7 +32,6 @@ public class MethodReferenceTests {
     }
 
 
-
     int calculate(int x, int y, BiFunction<Integer, Integer, Integer> operator) {
         return operator.apply(x, y);
     }
@@ -54,7 +53,7 @@ public class MethodReferenceTests {
     @Test
     void strEqualToTest() {
 //        BiPredicate<String,String> isEqaulTo = (x,y) -> x.equals(y);
-        BiPredicate<String,String> isEqualTo = String::equals;
+        BiPredicate<String, String> isEqualTo = String::equals;
         assertFalse(isEqualTo.test("hello", "Hello"));
     }
 
