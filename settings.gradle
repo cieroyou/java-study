@@ -1,3 +1,5 @@
 rootProject.name = 'java-study'
 include 'modern-java-concurrency'
+include 'modern-java-concurrency:virtual-threads'
+findProject(':modern-java-concurrency:virtual-threads')?.name = 'virtual-threads'
 
