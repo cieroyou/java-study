@@ -4,4 +4,6 @@ include 'modern-java-concurrency:virtual-threads'
 findProject(':modern-java-concurrency:virtual-threads')?.name = 'virtual-threads'
 include 'modern-java-concurrency:remote-service'
 findProject(':modern-java-concurrency:remote-service')?.name = 'remote-service'
+include 'modern-java-concurrency:clientbootapp-virtual-threads'
+findProject(':modern-java-concurrency:clientbootapp-virtual-threads')?.name = 'clientbootapp-virtual-threads'
 
