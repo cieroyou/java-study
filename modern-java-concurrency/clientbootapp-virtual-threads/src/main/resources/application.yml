@@ -3,7 +3,8 @@ server:
   tomcat:
     threads:
       max: 10
-spring:
-  threads:
-    virtual:
-      enabled: true
+#spring:
+#  threads:
+#    virtual:
+#      enabled: true
+resource.file-path: /Users/lydia/Developments/maxst/maxwork-appliance/cms

@@ -1,13 +1,11 @@
 package com.virtualthreads;
 
-import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.boot.web.embedded.tomcat.TomcatProtocolHandlerCustomizer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.EventListener;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +28,9 @@ public class ClientBootVirtualThreadsApp {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void doSomethingAfterStartup() {
-		if(virtualThreadFlag) {
+		if (virtualThreadFlag) {
 			log.info("Started App in Tomcat [VirtualThread] mode");
-		}else{
+		} else {
 			log.info("Started App in Tomcat [PlatformThread] mode");
 		}
 
