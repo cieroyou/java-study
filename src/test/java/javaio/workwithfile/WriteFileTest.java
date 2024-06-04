@@ -40,40 +40,51 @@ public class WriteFileTest {
 		writeStringToFile("Hello", fileName3);
 	}
 
+	@Test
+	public void whenAppendStringUsingBufferedWritter_thenOldContentShouldExistToo() throws IOException {
+		appendStringToFile("Hello", fileName3);
+	}
+
+	@Test
+	public void givenWritingStringToFile_whenUsingPrintWriter_thenCorrect() throws IOException {
+		String second = "Product name is %s and its price is %d $".formatted("iPhone", 1000);
+		String[] args = {"Some String", second};
+		writeFileWithPrintWriter(args);
+	}
+
+	@Test
+	public void givenWritingStringToFile_whenUsingFileOutputStream_thenCorrect() throws IOException {
+		writeStringToFileWithStream("Hello", fileName);
+	}
+
 	private void writeStringToFile(String data, String fileName) throws IOException {
 		final BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
 		writer.write(data);
 		writer.close();
 	}
 
-	@Test
-	public void whenAppendStringUsingBufferedWritter_thenOldContentShouldExistToo() throws IOException {
-		final String str = "World";
-		final BufferedWriter writer = new BufferedWriter(new FileWriter(fileName3, true));
+	private void writeStringToFileWithStream(String data, String fileName) throws IOException {
+		final FileOutputStream fos = new FileOutputStream(fileName);
+		final byte[] strBytes = data.getBytes();
+		fos.write(strBytes);
+		fos.close();
+	}
+
+	private void appendStringToFile(String data, String fileName) throws IOException {
+		final BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
 		writer.append(' ');
-		writer.append(str);
+		writer.append(data);
 		writer.close();
 	}
 
-	@Test
-	public void givenWritingStringToFile_whenUsingPrintWriter_thenCorrect() throws IOException {
+	private void writeFileWithPrintWriter(String args[]) throws IOException {
 		final FileWriter fileWriter = new FileWriter(fileName);
 		final PrintWriter printWriter = new PrintWriter(fileWriter);
-		printWriter.print("Some String");
-		printWriter.printf("Product name is %s and its price is %d $", "iPhone", 1000);
+		for (String arg : args) {
+			printWriter.println(arg);
+		}
 		printWriter.close();
 	}
-
-	@Test
-	public void givenWritingStringToFile_whenUsingFileOutputStream_thenCorrect() throws IOException {
-		final String str = "Hello";
-		final FileOutputStream outputStream = new FileOutputStream(fileName3);
-		final byte[] strToBytes = str.getBytes();
-		outputStream.write(strToBytes);
-		outputStream.close();
-	}
-
-	//
 
 	@Test
 	public void givenWritingToFile_whenUsingDataOutputStream_thenCorrect() throws IOException {
