@@ -1,4 +1,4 @@
-package example.javaio;
+package javaio.workwithfile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -29,11 +29,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * /test/resources/fileTest.txt 를 읽는 다양한 방법
+ * src/test/resources/fileTest.txt 를 읽는 다양한 방법
  */
 @TestMethodOrder(OrderAnnotation.class)
 public class ReadFileTests {
 
+    String SYSTEM_DEPENDENT_FILENAME = "src/test/resources/fileTest.txt";
     @Order(1)
     @DisplayName("Classloader-상대경로를 이용한 파일읽기")
     @Test
@@ -92,10 +93,9 @@ public class ReadFileTests {
     public void givenFileName_whenUsingIOUtils_thenFileData() throws IOException {
         // given
         String expectedData = "Hello, world!!";
-        String file = "src/test/resources/fileTest.txt";
         // when
         String data;
-        try (FileInputStream fis = new FileInputStream(file)) {
+        try (FileInputStream fis = new FileInputStream(SYSTEM_DEPENDENT_FILENAME)) {
             data = IOUtils.toString(fis, StandardCharsets.UTF_8);
         }
         // then
@@ -108,10 +108,9 @@ public class ReadFileTests {
     public void whenReadWithBufferedReader_thenCorrect() throws IOException {
         // given
         String expected_value = "Hello, world!!";
-        String file = "src/test/resources/fileTest.txt";
         // when
         String currentLine;
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(SYSTEM_DEPENDENT_FILENAME))) {
             currentLine = reader.readLine();
         }
         // then
@@ -124,9 +123,8 @@ public class ReadFileTests {
     public void whenReadSmallFileJava7_thenCorrect() throws IOException {
         // given
         String expected_value = "Hello, world!!";
-        String file = "src/test/resources/fileTest.txt";
         // when
-        Path path = Paths.get(file);
+        Path path = Paths.get(SYSTEM_DEPENDENT_FILENAME);
         String read = Files.readAllLines(path).get(0);
         // then
         assertEquals(expected_value, read);
@@ -138,9 +136,8 @@ public class ReadFileTests {
     public void whenReadLargeFileJava7_thenCorrect() throws IOException {
         // given
         String expected_value = "Hello, world!!";
-        String file = "src/test/resources/fileTest.txt";
         // when
-        Path path = Paths.get(file);
+        Path path = Paths.get(SYSTEM_DEPENDENT_FILENAME);
         BufferedReader reader = Files.newBufferedReader(path);
         String line = reader.readLine();
         // then
@@ -171,9 +168,8 @@ public class ReadFileTests {
     @Test
     public void whenReadWithScanner_thenCorrect() throws IOException {
         // given
-        String file = "src/test/resources/fileTest.txt";
         // when
-        try (Scanner scanner = new Scanner(new File(file))) {
+        try (Scanner scanner = new Scanner(new File(SYSTEM_DEPENDENT_FILENAME))) {
             scanner.useDelimiter(" ");
 
             assertTrue(scanner.hasNext());
@@ -215,10 +211,9 @@ public class ReadFileTests {
     public void whenReadWithDataInputStream_thenCorrect() throws IOException {
         // given
         String expectedValue = "Hello, world!!";
-        String file = "src/test/resources/fileTest.txt";
         String result = null;
         // when
-        try (DataInputStream reader = new DataInputStream(new FileInputStream(file))) {
+        try (DataInputStream reader = new DataInputStream(new FileInputStream(SYSTEM_DEPENDENT_FILENAME))) {
             int nBytesToRead = reader.available();
             if (nBytesToRead > 0) {
                 byte[] bytes = new byte[nBytesToRead];
@@ -235,9 +230,8 @@ public class ReadFileTests {
     public void whenReadWithFileChannel_thenCorrect() throws IOException {
         // given
         String expected_value = "Hello, world!!";
-        String file = "src/test/resources/fileTest.txt";
         // when
-        try (RandomAccessFile reader = new RandomAccessFile(file, "r");
+        try (RandomAccessFile reader = new RandomAccessFile(SYSTEM_DEPENDENT_FILENAME, "r");
              FileChannel channel = reader.getChannel();) {
             int bufferSize = 1024;
             if (bufferSize > channel.size()) {
