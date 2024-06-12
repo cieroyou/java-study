@@ -11,9 +11,9 @@ public class PaymentProcessor {
 		this.paymentApiCallers = paymentApiCallers;
 	}
 
-	public void pay(PayRequest payRequest) {
+	public PayMethod pay(PayRequest payRequest) {
 		PaymentApiCaller<? super PayRequest> paymentApiCaller = getPaymentApiCaller(payRequest.getPaymethod());
-		paymentApiCaller.pay(payRequest);
+		return paymentApiCaller.pay(payRequest);
 	}
 
 	@SuppressWarnings("unchecked")

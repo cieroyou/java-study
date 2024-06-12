@@ -13,7 +13,8 @@ public class PgCardApiCaller implements PaymentApiCaller<PgCardRequest> {
 	}
 
 	@Override
-	public void pay(PgCardRequest payRequest) {
+	public PayMethod pay(PgCardRequest payRequest) {
 		System.out.printf("PG사 결제에만 필요한 데이터{%s}로 PGCard에 결제요청함", payRequest);
+		return payRequest.getPaymethod();
 	}
 }

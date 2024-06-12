@@ -1,5 +1,7 @@
 package polymorphism.v2;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,9 +25,17 @@ class PaymentProcessorTest {
 
 	@Test
 	void testKakaoPay() {
-		PayRequest payRequest = new KakaoPayRequest(20000L, "kakao pay data");
-		paymentProcessor.pay(payRequest);
+		// given
+		var payRequest = KakaoPayRequest.builder()
+			.name("하나카드")
+			.cardNumber("1234-1234-1234-1234")
+			.price(10000L)
+			.svv("338")
+			.build();
+		// when
+		var paymethod = paymentProcessor.pay(payRequest);
 		// then
 		// kakao pay api caller 호출 확인. KakaoPayApiCaller.pay() 메서드가 호출되었는지 확인
+		assertEquals(PayMethod.KAKAO_PAY, paymethod);
 	}
 }

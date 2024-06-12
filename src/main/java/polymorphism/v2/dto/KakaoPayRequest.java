@@ -1,14 +1,31 @@
 package polymorphism.v2.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import polymorphism.v2.PayMethod;
 
 @Getter
 public class KakaoPayRequest extends PayRequest {
-	private final String kakaoPayData;
+	private final String name;
+	private final String cardNumber;
+	private final String svv;
 
-	public KakaoPayRequest(Long price, String kakaoPayData) {
+	@Builder
+	public KakaoPayRequest(Long price, String name, String cardNumber, String svv) {
 		super(price, PayMethod.KAKAO_PAY);
-		this.kakaoPayData = kakaoPayData;
+		this.name = name;
+		this.cardNumber = cardNumber;
+		this.svv = svv;
+	}
+
+	@Override
+	public String toString() {
+		return "KakaoPayRequest{" +
+			"name='" + name + '\'' +
+			", cardNumber='" + cardNumber + '\'' +
+			", svv='" + svv + '\'' +
+			", paymethod=" + paymethod +
+			", price=" + price +
+			'}';
 	}
 }
