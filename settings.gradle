@@ -9,4 +9,8 @@ findProject(':modern-java-concurrency:clientbootapp-virtual-threads')?.name = 'c
 include 'netty-sample'
 include 'netty-sample:byte-messenger'
 findProject(':netty-sample:byte-messenger')?.name = 'byte-messenger'
+include 'netty-sample:websocket-server'
+findProject(':netty-sample:websocket-server')?.name = 'websocket-server'
+include 'netty-sample:with-protobuf'
+findProject(':netty-sample:with-protobuf')?.name = 'with-protobuf'
 
