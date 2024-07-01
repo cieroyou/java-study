@@ -1,4 +1,4 @@
-package org.example.server;
+package com.sera.tutorial.netty.bytemessenger.server;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

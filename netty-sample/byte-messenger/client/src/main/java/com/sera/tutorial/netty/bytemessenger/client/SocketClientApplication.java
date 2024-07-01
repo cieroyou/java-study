@@ -1,4 +1,4 @@
-package org.example.client;
+package com.sera.tutorial.netty.bytemessenger.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,8 +23,9 @@ import lombok.RequiredArgsConstructor;
 public class SocketClientApplication {
 
 	public static void main(String[] args) throws InterruptedException {
+		// String host = "10.0.0.83";
 		String host = "localhost";
-		int port = 8888;
+		int port = 8091;
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
 
 		try {
@@ -46,7 +47,7 @@ public class SocketClientApplication {
 			BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 			while (true) {
 				String line = in.readLine();
-				ByteBuf data = getData(1);
+				ByteBuf data = getData(Integer.parseInt(line));
 				channel.writeAndFlush(data);
 
 				if (line.equals("exit")) {
@@ -66,7 +67,7 @@ public class SocketClientApplication {
 	private static ByteBuf getData(int value) {
 		byte[] data = new byte[] {
 			1, // protocolVersion
-			2, // systemId
+			(byte)value, // systemId
 			3, // objectId
 			4, // messageID
 			1, // locked (true)
@@ -83,7 +84,15 @@ public class SocketClientApplication {
 			(byte)255, // checksumA
 			(byte)254  // checksumB
 		};
+		System.out.println("Send: " + bytesToHex(data));
 		return Unpooled.wrappedBuffer(data);
+	}
+	private static String bytesToHex(byte[] bytes) {
+		StringBuilder sb = new StringBuilder();
+		for (byte b : bytes) {
+			sb.append(String.format("%02X ", b));
+		}
+		return sb.toString().trim();
 	}
 }
 
