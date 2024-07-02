@@ -1,5 +1,6 @@
 package example;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -12,6 +13,68 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class ConcurrencyModificationTests {
+
+	@DisplayName("순회 중 map 수정 시_ConcurrentModificationException 발생")
+	@Test
+	void givenHashMap_WhenTraversedAndModifyAtTheSameTime_ThenOccurConcurrentModificationException_withIterator() {
+		// given
+		Map<Integer, String> map = new HashMap<>();
+		map.put(1, "one");
+		map.put(2, "two");
+		// when
+		Iterator<Integer> it = map.keySet().iterator();
+		boolean exceptionThrown = false;
+		try {
+			while (it.hasNext()) {
+				Integer key = it.next();
+				map.put(3, "three");
+			}
+		} catch (ConcurrentModificationException e) {
+			exceptionThrown = true;
+		}
+		// then
+		assertTrue(exceptionThrown, "ConcurrentModificationException이 발생해야 합니다.");
+	}
+
+	@DisplayName("순회 중 map 수정 시_ConcurrentModificationException 발생")
+	@Test
+	void givenHashMap_WhenTraversedAndModifyAtTheSameTime_ThenOccurConcurrentModificationException_withForEach() {
+		// given
+		Map<Integer, String> map = new HashMap<>();
+		map.put(1, "one");
+		map.put(2, "two");
+		// when
+		boolean exceptionThrown = false;
+		try {
+			map.keySet().forEach(key -> {
+				map.put(3, "three");
+			});
+		} catch (ConcurrentModificationException e) {
+			exceptionThrown = true;
+		}
+		// then
+		assertTrue(exceptionThrown, "ConcurrentModificationException이 발생해야 합니다.");
+	}
+
+	@DisplayName("순회 중 map 수정 시_ConcurrentModificationException 발생")
+	@Test
+	void givenHashMap_WhenTraversedAndModifyAtTheSameTime_ThenOccurConcurrentModificationException_withForLoop() {
+		// given
+		Map<Integer, String> map = new HashMap<>();
+		map.put(1, "one");
+		map.put(2, "two");
+		boolean exceptionThrown = false;
+		// when
+		try {
+			for (Map.Entry<Integer, String> entry : map.entrySet()) {
+				map.put(3, "three");
+			}
+		} catch (ConcurrentModificationException e) {
+			exceptionThrown = true;
+		}
+		//then
+		assertTrue(exceptionThrown, "ConcurrentModificationException이 발생해야 합니다.");
+	}
 
     @Test
     void givenHashMap_whenSumParallel_thenError() throws Exception {
