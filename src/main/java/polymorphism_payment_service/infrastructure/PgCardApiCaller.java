@@ -1,9 +1,9 @@
-package polymorphism.v2.infrastructure;
+package polymorphism_payment_service.infrastructure;
 
 import lombok.Getter;
-import polymorphism.v2.PayMethod;
-import polymorphism.v2.PaymentApiCaller;
-import polymorphism.v2.dto.PgCardRequest;
+import polymorphism_payment_service.domain.valueobjects.PayMethod;
+import polymorphism_payment_service.infrastructure.dto.PgCardRequest;
+import polymorphism_payment_service.domain.service.PaymentApiCaller;
 
 @Getter
 public class PgCardApiCaller implements PaymentApiCaller<PgCardRequest> {

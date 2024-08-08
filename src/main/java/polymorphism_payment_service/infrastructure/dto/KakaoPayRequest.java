@@ -1,8 +1,9 @@
-package polymorphism.v2.dto;
+package polymorphism_payment_service.infrastructure.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import polymorphism.v2.PayMethod;
+import polymorphism_payment_service.domain.dto.PayRequest;
+import polymorphism_payment_service.domain.valueobjects.PayMethod;
 
 @Getter
 public class KakaoPayRequest extends PayRequest {
@@ -17,6 +18,8 @@ public class KakaoPayRequest extends PayRequest {
 		this.cardNumber = cardNumber;
 		this.svv = svv;
 	}
+
+
 
 	@Override
 	public String toString() {

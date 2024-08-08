@@ -1,8 +1,10 @@
-package polymorphism.v2;
+package polymorphism_payment_service.domain.service;
 
 import java.util.List;
 
-import polymorphism.v2.dto.PayRequest;
+import polymorphism_payment_service.domain.exception.UnsupportedPaymentRequestException;
+import polymorphism_payment_service.domain.valueobjects.PayMethod;
+import polymorphism_payment_service.domain.dto.PayRequest;
 
 public class PaymentProcessor {
 	private final List<PaymentApiCaller<? extends PayRequest>> paymentApiCallers;
@@ -23,6 +25,6 @@ public class PaymentProcessor {
 			.map(caller -> (PaymentApiCaller<PayRequest>)caller)
 			.findFirst()
 			.orElseThrow(
-				() -> new IllegalArgumentException("No payment api caller found for pay method: " + payMethod));
+				() -> new UnsupportedPaymentRequestException("No payment api caller found for pay method: " + payMethod));
 	}
 }
