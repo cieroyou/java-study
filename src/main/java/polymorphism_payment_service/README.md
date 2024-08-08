@@ -11,10 +11,12 @@ main.java.polymorphism_payment_service
 │   │   ├── PaymentApiCaller.java
 │   │   └── PaymentProcessor.java
 │   └── dto
-│       └── PayRequest.java
+│       └── PayRequest.java 
 │   └── exception
 │       └── UnsupportedPaymentRequestException.java
 ├── infrastructure
+│   └── dto
+│       └── KakaoPayRequest.java    
 │   └── KakaoPayApiCaller.java
 ```
 - `domain`: 도메인 로직을 포함합니다.
