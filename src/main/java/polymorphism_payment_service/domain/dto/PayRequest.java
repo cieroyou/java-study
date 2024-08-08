@@ -5,8 +5,8 @@ import polymorphism_payment_service.domain.valueobjects.PayMethod;
 
 @Getter
 public class PayRequest {
-	PayMethod paymethod;
-	Long price;
+	protected PayMethod paymethod;
+	protected Long price;
 
 	public PayRequest(Long price, PayMethod payMethod) {
 		this.price = price;

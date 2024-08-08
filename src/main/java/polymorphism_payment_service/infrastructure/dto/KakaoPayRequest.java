@@ -19,6 +19,8 @@ public class KakaoPayRequest extends PayRequest {
 		this.svv = svv;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "KakaoPayRequest{" +
