@@ -1,8 +1,8 @@
-package polymorphism.v2.infrastructure;
+package polymorphism_payment_service.infrastructure;
 
-import polymorphism.v2.PayMethod;
-import polymorphism.v2.PaymentApiCaller;
-import polymorphism.v2.dto.NaverPayRequest;
+import polymorphism_payment_service.domain.valueobjects.PayMethod;
+import polymorphism_payment_service.infrastructure.dto.NaverPayRequest;
+import polymorphism_payment_service.domain.service.PaymentApiCaller;
 
 public class NaverPayApiCaller implements PaymentApiCaller<NaverPayRequest> {
 	@Override

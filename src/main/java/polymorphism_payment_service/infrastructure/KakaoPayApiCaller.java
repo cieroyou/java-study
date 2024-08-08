@@ -1,8 +1,8 @@
-package polymorphism.v2.infrastructure;
+package polymorphism_payment_service.infrastructure;
 
-import polymorphism.v2.PayMethod;
-import polymorphism.v2.PaymentApiCaller;
-import polymorphism.v2.dto.KakaoPayRequest;
+import polymorphism_payment_service.domain.valueobjects.PayMethod;
+import polymorphism_payment_service.domain.service.PaymentApiCaller;
+import polymorphism_payment_service.infrastructure.dto.KakaoPayRequest;
 
 public class KakaoPayApiCaller implements PaymentApiCaller<KakaoPayRequest> {
 	@Override

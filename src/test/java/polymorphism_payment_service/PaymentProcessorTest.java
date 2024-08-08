@@ -1,17 +1,19 @@
-package polymorphism.v2;
-
-import static org.junit.jupiter.api.Assertions.*;
+package polymorphism_payment_service;
 
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import polymorphism.v2.dto.KakaoPayRequest;
-import polymorphism.v2.dto.PayRequest;
-import polymorphism.v2.infrastructure.KakaoPayApiCaller;
-import polymorphism.v2.infrastructure.NaverPayApiCaller;
-import polymorphism.v2.infrastructure.PgCardApiCaller;
+import polymorphism_payment_service.domain.dto.PayRequest;
+import polymorphism_payment_service.domain.service.PaymentApiCaller;
+import polymorphism_payment_service.domain.service.PaymentProcessor;
+import polymorphism_payment_service.domain.valueobjects.PayMethod;
+import polymorphism_payment_service.infrastructure.KakaoPayApiCaller;
+import polymorphism_payment_service.infrastructure.NaverPayApiCaller;
+import polymorphism_payment_service.infrastructure.PgCardApiCaller;
+import polymorphism_payment_service.infrastructure.dto.KakaoPayRequest;
 
 class PaymentProcessorTest {
 	private PaymentProcessor paymentProcessor;
@@ -36,6 +38,6 @@ class PaymentProcessorTest {
 		var paymethod = paymentProcessor.pay(payRequest);
 		// then
 		// kakao pay api caller 호출 확인. KakaoPayApiCaller.pay() 메서드가 호출되었는지 확인
-		assertEquals(PayMethod.KAKAO_PAY, paymethod);
+		Assertions.assertEquals(PayMethod.KAKAO_PAY, paymethod);
 	}
 }
